@@ -154,10 +154,9 @@ export default function Home() {
     setName("");
     setRole("patient");
   };
-
-  const sendMessage = async () => {
-    if (!message.trim()) return;
-
+  const sendMessage = async (text?: string) => {
+    const userMessage = (text ?? message).trim();
+    if (!userMessage) return;
     if (!isRegistered) {
       setShowRegisterModal(true);
       return;
@@ -171,8 +170,6 @@ export default function Home() {
       setTimeout(() => scrollTo("waitlist"), 1200);
       return;
     }
-
-    const userMessage = message.trim();
     setMessage("");
     setChatMessages((prev) => [
       ...prev,
@@ -207,6 +204,10 @@ export default function Home() {
         return updated;
       });
     }
+  };
+  const handleSuggestionClick = (question:any) => {
+    setMessage(question);
+    sendMessage(question);
   };
   const RoleButton = ({
     value,
@@ -257,12 +258,12 @@ export default function Home() {
                 alt="Adamiani.AI"
                 width={156}
                 height={28}
-                className=""
+                className="sm:max-w-full max-w-30"
               />
             </Link>
             <div className="hidden lg:flex items-center gap-8 text-[13px] font-medium text-[#50677F]">
               {[
-                { label: t.nav[0], href: "journey" },
+                { label: t.nav[0], href: "how-it-work" },
                 { label: t.nav[1], href: "treatment-request" },
                 { label: t.nav[2], href: "passport" },
                 { label: t.nav[3], href: "trust" },
@@ -276,8 +277,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <div className="hidden lg:flex items-center gap-3">
-              <div className="hidden sm:flex">
+            <div className="flex items-center gap-3">
+              <div className="flex">
                 {["en", "ru", "ka"].map((lang: any, index) => (
                   <div
                     key={lang}
@@ -293,37 +294,37 @@ export default function Home() {
               </div>
               <Link
                 href="/"
-                className="hidden md:flex items-center gap-2 rounded-full group bg-accent-blue hover:bg-accent-teal transition-all duration-500 text-white px-5 py-2.5 text-sm"
+                className="hidden lg:flex items-center gap-2 rounded-full group bg-accent-blue hover:bg-accent-teal transition-all duration-500 text-white px-5 py-2.5 text-sm"
               >
                 {t.startCase}
                 <ArrowRight className="h-4 w-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
               </Link>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="relative flex h-6 w-6 items-center justify-center lg:hidden"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+              >
+                <span
+                  className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "rotate-45" : "-translate-y-1.5"
+                    }`}
+                />
+                <span
+                  className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "opacity-0" : "opacity-100"
+                    }`}
+                />
+                <span
+                  className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "-rotate-45" : "translate-y-1.5"
+                    }`}
+                />
+              </button>
             </div>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="relative flex h-6 w-6 items-center justify-center lg:hidden"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-            >
-              <span
-                className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "rotate-45" : "-translate-y-1.5"
-                  }`}
-              />
-              <span
-                className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "opacity-0" : "opacity-100"
-                  }`}
-              />
-              <span
-                className={`absolute h-0.5 w-5 rounded-full bg-dark-grayish-blue transition-all duration-300 ease-in-out ${isOpen ? "-rotate-45" : "translate-y-1.5"
-                  }`}
-              />
-            </button>
           </nav>
         </div>
         <div className={`lg:hidden bg-cream fixed transition-all duration-500 w-full left-0 border-b border-hairline z-999 shadow-[0_1px_3px_rgba(6,28,46,0.0509804),0_24px_60px_-20px_rgba(6,28,46,0.180392)] ${isOpen ? "top-14.75" : "-top-100"}`}>
           <div className="flex flex-col p-6 gap-8">
             <div className="flex flex-col items-start gap-5 text-[13px] font-medium text-[#50677F]">
               {[
-                { label: t.nav[0], href: "journey" },
+                { label: t.nav[0], href: "how-it-work" },
                 { label: t.nav[1], href: "treatment-request" },
                 { label: t.nav[2], href: "passport" },
                 { label: t.nav[3], href: "trust" },
@@ -335,20 +336,6 @@ export default function Home() {
                 >
                   {item.label}
                 </button>
-              ))}
-            </div>
-            <div className="flex">
-              {["en", "ru", "ka"].map((lang: any, index) => (
-                <div
-                  key={lang}
-                  onClick={() => { setLanguage(lang); setIsOpen(false) }}
-                  className={`cursor-pointer text-xs font-medium ${language === lang ? "text-ink" : "text-dark-grayish-blue"}`}
-                >
-                  {lang.toUpperCase()}
-                  {index !== 2 && (
-                    <span className="pl-1.25 pr-1.5 text-hairline">/</span>
-                  )}
-                </div>
               ))}
             </div>
             <Link
@@ -413,9 +400,9 @@ export default function Home() {
                     <Lock className="text-accent-blue w-3.5 h-3.5" />
                     <p className="text-[11px] font-semibold text-ink tracking-[-0.0038em]">{t.privacyFirstProcess}</p>
                   </div>
-                  <div className="bg-[linear-gradient(357.49deg,rgba(28,38,52,0.55)_2.09%,rgba(0,0,0,0)_97.91%)] w-full absolute bottom-0 left-0 py-11 px-5.5 h-75 flex flex-col justify-end rounded-[0_0_4px_4px]">
+                  <div className="w-full absolute bottom-0 left-0 py-11 px-5.5 flex flex-col justify-end rounded-[0_0_4px_4px]">
                     <h5 className="text-[11px] leading-[13.6px] tracking-[0.1606em] mb-2.5 text-cream/75 uppercase  font-semibold">{t.howItWorksTitle}</h5>
-                    <p className="text-base font-semibold text-white leading-4">{t.howItWorksSubtitle}</p>
+                    <p className="text-base font-semibold text-white leading-[1.2]">{t.howItWorksSubtitle}</p>
                   </div>
                 </div>
               </div>
@@ -462,7 +449,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="bg-white py-10 sm:py-15 md:py-22 lg:py-28 border-b border-hairline">
+            className="bg-white py-10 sm:py-15 md:py-22 lg:py-28 border-b border-hairline" id="how-it-work">
             <div className="max-w-360 mx-auto sm:px-8 px-4 grid grid-cols-1 gap-6 laptop:grid-cols-12 lg:gap-10">
               <div className="laptop:col-span-5">
                 <div className="flex items-center gap-3">
@@ -642,8 +629,8 @@ export default function Home() {
                               className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trPreferred ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trPreferred}</option>
-                              {t.trPreferredOpts.map((opt) => (
-                                <option key={opt} value={opt} className="text-[#062A4F]">{opt}</option>
+                              {t.trPreferredOpts.map((opt, index) => (
+                                <option key={index} value={opt} className="text-[#062A4F]">{opt}</option>
                               ))}
                             </select>
                           </div>
@@ -665,8 +652,8 @@ export default function Home() {
                               className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTreatment ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trTreatment}</option>
-                              {t.trTreatmentOpts.map((opt) => (
-                                <option key={opt} value={opt} className="text-[#062A4F]">{opt}</option>
+                              {t.trTreatmentOpts.map((opt, index) => (
+                                <option key={index} value={opt} className="text-[#062A4F]">{opt}</option>
                               ))}
                             </select>
                           </div>
@@ -678,8 +665,8 @@ export default function Home() {
                               className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTimeline ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trTimeline}</option>
-                              {t.trTimelineOpts.map((opt) => (
-                                <option key={opt} value={opt} className="text-[#062A4F]">{opt}</option>
+                              {t.trTimelineOpts.map((opt, index) => (
+                                <option key={index} value={opt} className="text-[#062A4F]">{opt}</option>
                               ))}
                             </select>
                           </div>
@@ -799,7 +786,7 @@ export default function Home() {
                 <p className="laptop:mt-5 mt-3 sm:text-base text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full">{t.healthPassportDescription}</p>
                 <div className="mt-8 flex gap-5 flex-col after:content-[''] after:z-[-1] relative after:absolute after:w-px after:h-[calc(100%-24px)] after:bg-accent-blue after:left-3">
                   {t.healthPassportFeatures.map(({ title, description }) => (
-                    <div key={title} className="flex items-start gap-3 last:after:content-[''] last:after:z-[1] relative last:after:absolute last:after:w-px last:after:h-full last:after:bg-cream last:after:left-3">
+                    <div key={title} className="flex items-start gap-3 last:after:content-[''] last:after:z-1 relative last:after:absolute last:after:w-px last:after:h-full last:after:bg-cream last:after:left-3">
                       <div className="text-accent-blue bg-cream relative z-10">
                         <CircleCheck />
                       </div>
@@ -986,10 +973,23 @@ export default function Home() {
                       ))}
                       <div ref={chatEndRef} />
                     </div>
-
-                    <div className="mt-5 flex flex-col gap-3 sm:flex-row border-t border-hairline">
+                    {chatMessages.length <= 1 && (
+                      <div className="px-4 py-3">
+                        <div className="flex flex-wrap gap-2 justify-left items-center">
+                          {t.suggestedQuestions.map((question) => (
+                            <button
+                              key={question}
+                              onClick={() => handleSuggestionClick(question)}
+                              className="rounded-full border border-accent-blue px-3 py-1.5 text-[13px] text-accent-blue hover:bg-accent-blue hover:text-white transition-all duration-500 cursor-pointer"
+                            >
+                              {question}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-3 sm:flex-row border-t border-hairline">
                       <div className="flex gap-3 w-full py-3 px-4 items-center">
-
                         <input
                           type="text"
                           value={message}
@@ -998,7 +998,7 @@ export default function Home() {
                           placeholder={t.chatPlaceholder}
                           className="w-full flex-1 rounded-[10px] bg-cream py-3.25 leading-normal px-3 text-sm  text-ink outline-none placeholder:text-dark-grayish-blue"
                         />
-                        <button type="button" onClick={sendMessage} className="cursor-pointer rounded-full bg-accent-blue hover:bg-accent-teal transition-all duration-500 px-4.25 py-2.5 text-xs font-semibold text-white flex items-center gap-1.5">
+                        <button type="button" onClick={() => sendMessage()} className="cursor-pointer rounded-full bg-accent-blue hover:bg-accent-teal transition-all duration-500 px-4.25 py-2.5 text-xs font-semibold text-white flex items-center gap-1.5">
                           {t.sendButton}
                           <Send className="w-3.5 h-3.5 text-white" />
                         </button>
@@ -1187,20 +1187,33 @@ export default function Home() {
                 ))}
               </div>
             </div>
+            <div>
+              <h3 className="mb-4 font-semibold">{t.productSection.title}</h3>
+              <ul className="space-y-2">
+                {t.productSection.links.map((link) => (
+                  <li key={link.label}>
+                    <button
+                      onClick={() => scrollTo(link.href)}
+                      className="text-sm cursor-pointer text-left text-dark-grayish-blue transition-colors hover:text-accent-blue"
+                    >
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {t.footerSections.map((section) => (
+              <div key={section.title}>
+                <h3 className="mb-4 font-semibold">{section.title}</h3>
 
-            {t.footerSections.map((c) => (
-              <div key={c.title}>
-                <div className="font-display text-[12px] font-semibold uppercase tracking-[0.22em] text-ink">
-                  {c.title}
-                </div>
-                <ul className="sm:mt-5 mt-3 sm:space-y-3 space-y-2" >
-                  {c.links.map((l) => (
-                    <li key={l}>
+                <ul className="space-y-2">
+                  {section.links.map((link) => (
+                    <li key={link.label}>
                       <a
-                        href="#"
+                        href={link.href}
                         className="text-sm text-dark-grayish-blue transition-colors hover:text-accent-blue"
                       >
-                        {l}
+                        {link.label}
                       </a>
                     </li>
                   ))}
@@ -1228,53 +1241,53 @@ export default function Home() {
               <p className="laptop:mt-5 mt-3 sm:text-base text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full">{t.modalText}</p>
               <div className="mt-6 flex flex-col gap-6">
                 <div className="grid grid-cols-3 flex-wrap justify-center gap-2">
-                   <RoleButton
-                        value="patient"
-                        label={t.rolePatient}
-                        icon={User}
-                        dark
-                      />
-                      <RoleButton
-                        value="doctor"
-                        label={t.roleDoctor}
-                        icon={Stethoscope}
-                        dark
-                      />
-                      <RoleButton
-                        value="clinic"
-                        label={t.roleClinic}
-                        icon={Hospital}
-                        dark
-                      />
-                </div>  
-                <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2.5">
-                  <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.nameLabel} <span className="text-accent-blue">*</span></label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder={t.name}
-                    className="rounded-md border border-hairline bg-cream px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                  <RoleButton
+                    value="patient"
+                    label={t.rolePatient}
+                    icon={User}
+                    dark
+                  />
+                  <RoleButton
+                    value="doctor"
+                    label={t.roleDoctor}
+                    icon={Stethoscope}
+                    dark
+                  />
+                  <RoleButton
+                    value="clinic"
+                    label={t.roleClinic}
+                    icon={Hospital}
+                    dark
                   />
                 </div>
-                <div className="flex flex-col gap-2.5">
-                  <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.email} <span className="text-accent-blue">*</span></label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t.email}
-                  className="rounded-md border border-hairline bg-cream px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
-                />
-                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2.5">
+                    <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.nameLabel} <span className="text-accent-blue">*</span></label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder={t.name}
+                      className="rounded-md border border-hairline bg-cream px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2.5">
+                    <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.email} <span className="text-accent-blue">*</span></label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t.email}
+                      className="rounded-md border border-hairline bg-cream px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                    />
+                  </div>
 
                 </div>
                 <div className="flex justify-end">
-                <button type="button" onClick={saveEmail} className="group transition-all  duration-500 hover:bg-accent-teal  flex items-center gap-1.75 cursor-pointer rounded-full bg-accent-blue text-cream font-semibold px-6 py-4 text-[13px] w-fit">
-                  {t.modalButton}
-                  <ArrowRight className="w-4 h-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
-                </button>
+                  <button type="button" onClick={saveEmail} className="group transition-all  duration-500 hover:bg-accent-teal  flex items-center gap-1.75 cursor-pointer rounded-full bg-accent-blue text-cream font-semibold px-6 py-4 text-[13px] w-fit">
+                    {t.modalButton}
+                    <ArrowRight className="w-4 h-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
+                  </button>
 
                 </div>
               </div>

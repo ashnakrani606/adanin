@@ -2,8 +2,8 @@ const en = {
   nav: ["How it works", "Treatment Request", "Health Passport", "Privacy",],
   startCase: "Start a case",
   heroBadge: "Healthcare coordination",
-  title: 'Your medical case,  <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">organized</span> with the care it deserves.',
-  description: "Adamiani.ai helps patients turn scattered scans, reports and notes into a clear, structured case — so doctors can review, compare options, and decide. Your records stay in one private Health Passport, shared only with your consent.",
+  title: 'Your medical case, <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue"> organized</span> for treatment abroad',
+  description: "Adamiani.ai helps patients turn scattered scans, reports and notes into a clear case summary, so licensed clinics can review the case and respond with structured treatment options.",
   primaryCta: "Start a treatment request",
   secondaryCta: "Learn about Health Passport",
   features: [
@@ -16,12 +16,12 @@ const en = {
       subtitle: "Structured for clinicians"
     },
     {
-      title: "By diagnosis & context",
-      subtitle: "Yours, in one place"
+      title: "Matched by condition",
+      subtitle: "Based on your medical case"
     }
   ],
   howItWorksTitle: "How Adamiani works",
-  howItWorksSubtitle: "AI organizes your case. Doctors decide the care.",
+  howItWorksSubtitle: "AI organizes your case. Doctors make medical decisions.",
   consentBasedSharing: "Consent-based sharing",
   structuredCaseFormat: "Structured case format",
   privacyFirstProcess: "Privacy-first process",
@@ -44,7 +44,7 @@ const en = {
     },
   ],
   howItWorksSectionSubtitle: "How it works",
-  howItWorksSectionTitle: 'A calm, structured path from  <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">question</span>  to clarity.',
+  howItWorksSectionTitle: 'From scattered <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">documents</span>  to clinic-reviewed treatment options. ',
   howItWorksSectionDescription: "No more juggling translators, PDF folders and unfamiliar systems. Adamiani brings structure to every step.",
   howItWorksSteps: [
     {
@@ -55,7 +55,7 @@ const en = {
     {
       number: "02",
       title: "We organize it",
-      description: "AI creates a clear case summary and medical timeline.",
+      description: "AI-assisted tools help create a clear case summary and medical timeline.",
     },
     {
       number: "03",
@@ -69,7 +69,7 @@ const en = {
     },
   ],
   treatmentRequestSubtitle: "Treatment request",
-  treatmentRequestTitle: 'Get treatment  <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-teal">options</span>  — clearly, privately.',
+  treatmentRequestTitle: 'Request clinic-reviewed treatment   <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-teal">options.</span>',
   treatmentRequestDescription: "Share a few details about your case. Our coordination team responds with structured treatment options and matched clinic pathways — never automated, never sold to a single clinic.",
   treatmentRequestFeatures: [
     {
@@ -103,12 +103,12 @@ const en = {
   budgetLabel: "Estimated budget (optional)",
   budgetPlaceholder: "Prefer not to say",
   additionalCommentsLabel: "Additional comments (optional)",
-  additionalInfoPlaceholder: "Anything else doctors should know about your case",
+  additionalInfoPlaceholder: "Anything else clinics should know about your case",
   submitNote: "After you submit the form, Adamiani.ai will contact you and help plan the next step.",
   submitButton: "Get Treatment Options",
   problemSectionSubtitle: "The problem",
   problemSectionTitle: "Treatment doesn't end when you <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>leave</span>  the hospital.",
-  problemSectionDescription: "Cross-border healthcare creates new failure points — translation gaps, fragmented records, lost continuity. Adamiani is built around the spaces in between.",
+  problemSectionDescription: "Cross-border treatment often comes with gaps — translation, fragmented records, and unclear follow-up. Adamiani helps organize the spaces in between.",
   whereCareBreaksDownTitle: "Where care breaks down",
   whereCareBreaksDownItems: [
     {
@@ -116,8 +116,8 @@ const en = {
       description: "No clear plan once you return home.",
     },
     {
-      title: "Medicine sources",
-      description: "Prescriptions hard to refill abroad.",
+      title: "Prescription continuity",
+      description: "Prescriptions and medication plans can be difficult to continue after returning home.",
     },
     {
       title: "Language barriers",
@@ -130,7 +130,7 @@ const en = {
   ],
   healthPassportSubtitle: "Health Passport",
   healthPassportTitle: "One private place for every <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>report</span>  and prescription.",
-  healthPassportDescription: "Your Health Passport keeps your medical timeline organized and searchable — and shares access only when you grant it.",
+  healthPassportDescription: "A private place to organize medical documents, summaries, and follow-up information — shared only with your consent.",
   healthPassportFeatures: [
     {
       title: "Documents Vault",
@@ -142,7 +142,7 @@ const en = {
     },
     {
       title: "AI Summary",
-      description: "Clear summaries that help doctors understand your case faster.",
+      description: "Clear, AI-assisted summaries for doctor and clinic review.",
     },
     {
       title: "Share With Doctor",
@@ -152,29 +152,29 @@ const en = {
   consentBasedTitle: "Consent-based",
   consentBasedDescription: "Your records stay with you — shared only with the clinicians you choose, only when you choose.",
   clinicMatchingSubtitle: "Clinic matching",
-  clinicMatchingTitle: "Not just finding a clinic — <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>making</span>  the right treatment decision.",
-  clinicMatchingDescription: "Adamiani organizes the documents, anonymizes where needed, and routes the case to the most suitable clinical contexts. You receive structured options to review, compare, and choose.",
+  clinicMatchingTitle: "Not just finding a clinic — <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>comparing</span>  clinic-reviewed options.",
+  clinicMatchingDescription: "Adamiani helps organize your documents and prepare your case for review by relevant clinics. You receive structured options to review and compare.",
   clinicMatchingButton: "Get Treatment Options",
   clinicMatchingFeatures: [
     {
       letter: "Q",
       title: "Qualified Case",
-      description: "A structured, clinician-ready case summary backed by your full medical history.",
+      description: "A structured case summary based on the documents and information you provide.",
     },
     {
       letter: "C",
       title: "Clinic Options",
-      description: "Multiple matched clinic pathways — compare treatment plans, not just venues.",
+      description: "Compare clinic responses, estimated pathways, and next steps."
     },
     {
       letter: "L",
       title: "Continuity Layer",
-      description: "Follow-up coordination across borders — your care continues after the procedure.",
+      description: "Follow-up information stays organized after treatment."
     },
   ],
   transparencySubtitle: "Transparency",
   transparencyTitle: "How We Protect the  <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>Patient's Interest</span>",
-  transparencyDescription: "Adamiani is built around clarity and trust at every level. We organize your case, compare clinics, and bring clarity to every step of the patient journey.",
+  transparencyDescription: "Adamiani is built around clarity and trust at every level. We organize your case, help you compare clinic-reviewed options, and keep the process clear at every step.",
   transparencyFeatures: [
     {
       title: "Multiple Options",
@@ -182,11 +182,11 @@ const en = {
     },
     {
       title: "Transparent Criteria",
-      description: "All decisions are made based on transparent, structured request data.",
+      description: "You compare options using clear, structured case information.",
     },
     {
       title: "Real Consent",
-      description: "You decide who, when, and how anyone accesses your private information and journey.",
+      description: "You decide which clinic receives your information and when.",
     },
     {
       title: "Transparent Process",
@@ -194,79 +194,82 @@ const en = {
     },
   ],
   patientJourneySubtitle: "Patient-first",
-  patientJourneyTitle: "We do not represent one clinic — we organize the <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-teal'>patient's care journey.</span>",
+  patientJourneyTitle: "We do not represent one clinic — we help  <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-teal'>patients compare clinic-reviewed options.</span>",
   aiSupportSubtitle: "AI support",
   aiSupportTitle: "AI assists. <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>It does not</span>  replace doctors.",
-  aiSupportDescription: "The assistant organizes symptoms, summarizes documents, and helps patients prepare for their clinical conversations. Every clinical decision remains with a qualified clinician.",
+  aiSupportDescription: "The assistant helps structure symptoms, documents, and questions for clinic review. It does not diagnose or recommend treatment.",
   aiSupportFeatures: [
     {
       title: "Organizes",
-      description: "Structures symptoms, documents and questions for clinicians.",
+      description: "Structures symptoms, documents, and questions for clinicians."
     },
     {
       title: "Translates",
-      description: "Renders medical language into plain text — EN / RU / KA.",
+      description: "Helps make medical information easier to understand — EN / RU / KA."
     },
     {
       title: "Prepares",
-      description: "Drafts the questions to bring into the consultation.",
+      description: "Helps draft questions to ask clinics or doctors."
     },
+  ],
+  suggestedQuestions: [
+    "What documents do I need?",
+    "How does Adamiani work?",
   ],
   assistantBadge: "Adamiani Assistant",
   assistantTagline: "Organizes your case · not a doctor",
   privacyTrustSubtitle: "Privacy & trust",
   privacyTrustTitle: "Built for <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-teal'>patient privacy</span>  from day one.",
-  privacyTrustDescription: "We treat your medical history with the same care a clinician would. Every safeguard is a mechanism, not a marketing claim.",
+  privacyTrustDescription: "Your medical information is handled with consent and clear access controls. Adamiani shares your case only with the clinics you approve.",
   privacyTrustFeatures: [
     {
       title: "Privacy by Design",
-      description: "Security and privacy are built into the architecture from the start.",
+      description: "Privacy and consent are designed into the process from the start.",
     },
     {
       title: "Patient-Controlled",
-      description: "You decide who can access your records and when.",
+      description: "You decide which clinic can receive your case and when.",
     },
     {
       title: "No AI Diagnosis Promise",
-      description: "AI does not replace doctors and is not a final diagnosis tool.",
+      description: "AI does not diagnose, prescribe treatment, or replace doctors.",
     },
   ],
   earlyAccessSubtitle: "Early access",
   earlyAccessSupportingText: "One organized record. One clearer path. Built with patients, for patients.",
   earlyAccessBadge: "Adamiani.ai",
-  earlyAccessTitle: "Leave a request and get early access to <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>Adamiani</span>  Health Passport.",
-  earlyAccessDescription: "Register as a patient, doctor or clinic. Be among the first to help shape patient-led, cross-border healthcare coordination.",
+  earlyAccessTitle: "Join early access for <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>Adamiani</span>  Health Passport.",
+  earlyAccessDescription: "Register your interest as a patient, doctor, or clinic and be among the first to receive updates as Adamiani develops its Health Passport experience.",
   earlyAccessRoleLabel: "I am a",
   earlyAccessPrivacyNotice: "We'll reach out privately. No spam, ever.",
   joinEarlyAccess: "Join Early Access",
   footerDescription: "Healthcare coordination, organized. Built in Tbilisi — patient-centered, privacy-first.",
+  productSection: {
+    title: "Product",
+    links: [
+      { label: "How it works", href: "how-it-work" },
+      { label: "Health Passport", href: "passport" },
+      { label: "Treatment Request", href: "treatment-request" },
+    ],
+  },
   footerSections: [
-    {
-      title: "Product",
-      links: [
-        "How it works",
-        "Health Passport",
-        "Treatment Request",
-      ],
-    },
     {
       title: "Company",
       links: [
-        "About",
-        "Privacy",
-        "Contact",
+        { label: "About", href: "#about" },
+        { label: "Privacy", href: "#privacy" },
+        { label: "Contact", href: "#contact" },
       ],
     },
     {
       title: "Support",
       links: [
-        "Help",
-        "Terms",
-        "Privacy policy",
+        { label: "Help", href: "#help" },
+        { label: "Terms", href: "#terms" },
+        { label: "Privacy policy", href: "#privacy" },
       ],
     },
   ],
-
   footerCopyright: "Adamiani.ai. All rights reserved.",
   footerBadge: "Consent-based · Privacy-first · Structured case format",
   heroCards: ["Upload records", "Receive clinic options", "Keep your history in one place"],
@@ -354,9 +357,9 @@ const en = {
   trPhoneHelper: "WhatsApp/phone is needed so Adamiani.ai can quickly contact you about treatment options.",
   trCountryRes: "Country of residence *",
   trTreatment: "Treatment needed *",
-  trTreatmentOpts: ["Hair Transplant", "Dental / Implants", "IVF / Fertility", "Plastic Surgery", "Oncology", "Check-up", "Other"],
+  trTreatmentOpts: ["Spine / Back pain", "Orthopedics", "Oncology", "Endocrinology", "Cardiology", "Check-up", "Hair Transplant", "Plastic / Aesthetic surgery", "Dental / Implants", "Hair transplant", "Other"],
   trPreferred: "Where would you like treatment?",
-  trPreferredOpts: ["Turkey", "Germany", "UAE", "Other"],
+  trPreferredOpts: ["Turkey", "Germany", "UAE", "Not sure yet", "Other"],
   trTimeline: "When are you planning treatment?",
   trTimelineOpts: ["As soon as possible", "This month", "In 1–3 months", "Later"],
   trBudget: "Estimated budget (optional)",
