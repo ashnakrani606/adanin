@@ -246,6 +246,16 @@ export default function Home() {
       document.body.classList.remove("max-[1024px]:overflow-hidden");
     };
   }, [isOpen]);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkScreen = () => setIsMobile(window.innerWidth < 768);
+
+  checkScreen();
+  window.addEventListener("resize", checkScreen);
+
+  return () => window.removeEventListener("resize", checkScreen);
+}, []);
   return (
     <>
       <div className="relative min-h-screen scroll-smooth bg-cream text-ink">
@@ -930,9 +940,9 @@ export default function Home() {
               <div className="laptop:col-span-7 md:col-span-6">
                 <div className="rounded-[10px] border border-hairline bg-white">
                   <div className="">
-                    <div className="flex items-center justify-between border-b border-[#DCEAF7] py-4 px-6">
+                    <div className="flex items-center justify-between border-b border-[#DCEAF7] sm:py-4 sm:px-6 py-2 px-4">
                       <div className="flex gap-3 items-center ">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-sm border mb-3 border-hairline bg-white text-accent-blue">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-sm border border-hairline bg-white text-accent-blue">
                           <GitCompare className="h-5 w-5" />
                         </div>
                         <div>
@@ -996,7 +1006,7 @@ export default function Home() {
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                          placeholder={t.chatPlaceholder}
+                          placeholder={isMobile ? t.askAssistant : t.chatPlaceholder}
                           className="w-full flex-1 rounded-[10px] bg-cream py-3.25 leading-normal px-3 text-sm  text-ink outline-none placeholder:text-dark-grayish-blue"
                         />
                         <button type="button" onClick={() => sendMessage()} className="cursor-pointer rounded-full bg-accent-blue hover:bg-accent-teal transition-all duration-500 px-4.25 py-2.5 text-xs font-semibold text-white flex items-center gap-1.5">

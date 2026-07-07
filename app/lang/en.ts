@@ -70,7 +70,7 @@ const en = {
   ],
   treatmentRequestSubtitle: "Treatment request",
   treatmentRequestTitle: 'Request clinic-reviewed treatment   <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-teal">options.</span>',
-  treatmentRequestDescription: "Share a few details about your case. Our coordination team responds with structured treatment options and matched clinic pathways — never automated, never sold to a single clinic.",
+  treatmentRequestDescription: "Share a few details about your case. We help organize your information and prepare a structured request for clinic review — with your consent.",
   treatmentRequestFeatures: [
     {
       title: "Consent-based sharing",
@@ -213,6 +213,7 @@ const en = {
     },
   ],
   suggestedQuestions: [
+    "Prepare my medical case",
     "What documents do I need?",
     "How does Adamiani work?",
   ],
@@ -318,6 +319,7 @@ const en = {
   chatDemoLabel: "AI Assistant Demo",
   chatAssistantName: "Adamiani.ai Assistant",
   freeQuestionsLabel: "Free questions remaining",
+  askAssistant: "Ask Adamiani Assistant...",
   chatPlaceholder: "Type a question about how Adamiani works…",
   sendButton: "Send",
   chatGreeting: "Hello, I am the Adamiani.ai assistant. I can help organize your case, but I do not replace a doctor.",
@@ -357,7 +359,7 @@ const en = {
   trPhoneHelper: "WhatsApp/phone is needed so Adamiani.ai can quickly contact you about treatment options.",
   trCountryRes: "Country of residence *",
   trTreatment: "Treatment needed *",
-  trTreatmentOpts: ["Spine / Back pain", "Orthopedics", "Oncology", "Endocrinology", "Cardiology", "Check-up", "Hair Transplant", "Plastic / Aesthetic surgery", "Dental / Implants", "Hair transplant", "Other"],
+  trTreatmentOpts: ["Spine / Back pain", "Orthopedics", "Oncology", "Endocrinology", "Cardiology", "Check-up", "Plastic / Aesthetic surgery", "Dental / Implants", "Hair transplant", "Other"],
   trPreferred: "Where would you like treatment?",
   trPreferredOpts: ["Turkey", "Germany", "UAE", "Not sure yet", "Other"],
   trTimeline: "When are you planning treatment?",
