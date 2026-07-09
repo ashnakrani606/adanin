@@ -302,13 +302,13 @@ useEffect(() => {
                   </div>
                 ))}
               </div>
-              <Link
-                href="/"
-                className="hidden lg:flex items-center gap-2 rounded-full group bg-accent-blue hover:bg-accent-teal transition-all duration-500 text-white px-5 py-2.5 text-sm"
+              <button
+                onClick={() => scrollTo("treatment-request")}
+                className="hidden cursor-pointer lg:flex items-center gap-2 rounded-full group bg-accent-blue hover:bg-accent-teal transition-all duration-500 text-white px-5 py-2.5 text-sm"
               >
                 {t.startCase}
                 <ArrowRight className="h-4 w-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
-              </Link>
+              </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="relative flex h-6 w-6 items-center justify-center lg:hidden"
@@ -351,7 +351,7 @@ useEffect(() => {
             <Link
               href="/"
               className="group flex items-center gap-2 rounded-full bg-accent-blue hover:bg-accent-teal text-white px-5 py-2.5 text-sm w-fit"
-              onClick={() => setIsOpen(false)}
+              onClick={() =>{ setIsOpen(false); scrollTo("treatment-request");}}
             >
               Start a case
               <ArrowRight className="w-4 h-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
@@ -376,14 +376,14 @@ useEffect(() => {
                 <h1 className="text-[32px] sm:text-[40px] md:text-[48px] laptop:text-[60px] lg:text-[68px] font-semibold leading-[1.08] text-ink font-display sm:mt-7 mt-5 tracking-[-1.36%]" dangerouslySetInnerHTML={{ __html: t.title }}></h1>
                 <p className="laptop:mt-9.5 mt-5 sm:text-base text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full">{t.description}</p>
                 <div className="laptop:mt-7.75 mt-4 flex gap-3 items-center laptop:flex-nowrap flex-wrap-reverse">
-                  <Link
-                    href="/"
-                    className="group flex items-center gap-1.75 rounded-full bg-accent-blue hover:bg-accent-teal transition-all  duration-500 text-cream font-semibold px-6 py-4 text-[13px]  w-fit"
+                  <button
+                    onClick={() => scrollTo("treatment-request")}
+                    className="group flex items-center gap-1.75 cursor-pointer rounded-full bg-accent-blue hover:bg-accent-teal transition-all  duration-500 text-cream font-semibold px-6 py-4 text-[13px]  w-fit"
                   >
                     {t.primaryCta}
                     <ArrowRight className="w-4 h-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
-                  </Link>
-                  <Link href="" className="text-ink text-[13px] font-semibold  tracking-[0.0025em] underline underline-offset-8 decoration-hairline">{t.secondaryCta}</Link>
+                  </button>
+                  <button onClick={() => scrollTo("passport")} className="cursor-pointer text-ink text-[13px] font-semibold  tracking-[0.0025em] underline underline-offset-8 decoration-hairline">{t.secondaryCta}</button>
                 </div>
                 <div className="sm:mt-12 mt-5 border-t border-hairline pt-6.75 grid xs:grid-cols-3 grid-cols-1 gap-5">
                   {t.features.map((feature: any, index: any) => (
@@ -827,6 +827,7 @@ useEffect(() => {
                 <p className="laptop:mt-5 mt-3 sm:text-base text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full">{t.clinicMatchingDescription}</p>
                 <button
                   type="button"
+                  onClick={() => scrollTo("treatment-request")}
                   className="group hover:bg-accent-teal transition-all  duration-500 flex mt-8 items-center gap-1.75 cursor-pointer rounded-full bg-accent-blue text-cream font-semibold px-6 py-4 text-[13px]  w-fit"
                 >
                   {t.submitButton}
