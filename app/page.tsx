@@ -26,6 +26,7 @@ import {
   LucideIcon,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import PhoneInput from "react-phone-number-input";
 import { supabase } from "../lib/supabase";
 import { motion } from "framer-motion";
 import { content, type Lang } from "./lang";
@@ -59,8 +60,10 @@ export default function Home() {
   const [trTimeline, setTrTimeline] = useState("");
   const [trBudget, setTrBudget] = useState("");
   const [trMessage, setTrMessage] = useState("");
+  const [trFile, setTrFile] = useState<File | null>(null);
   const [trSubmitted, setTrSubmitted] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const t = content[language];
 
@@ -93,6 +96,38 @@ export default function Home() {
       alert(t.trFillRequired);
       return;
     }
+
+    let attachmentText: string | null = null;
+    
+    let attachmentUrl: string | null = null;
+
+    if (trFile) {
+      const fileExt = trFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${fileExt}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("patient-inquiries")
+        .upload(fileName, trFile, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: trFile.type || "application/octet-stream",
+        });
+
+      if (uploadError) {
+        console.error(uploadError);
+        alert(t.error);
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("patient-inquiries")
+        .getPublicUrl(uploadData.path);
+
+      attachmentText = `Attachment: ${trFile.name}\n${publicUrlData.publicUrl}`;
+      
+      attachmentUrl = publicUrlData.publicUrl;
+    }
+
     const { error } = await supabase.from("patient_inquiries").insert([
       {
         name: trName.trim(),
@@ -104,6 +139,7 @@ export default function Home() {
         timeline: trTimeline || null,
         budget_range: trBudget.trim() || null,
         message: trMessage.trim() || null,
+        attachmentUrl: attachmentUrl, 
         language,
         status: "new",
       },
@@ -124,6 +160,10 @@ export default function Home() {
     setTrTimeline("");
     setTrBudget("");
     setTrMessage("");
+    setTrFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const saveEmail = async () => {
@@ -256,6 +296,23 @@ useEffect(() => {
 
   return () => window.removeEventListener("resize", checkScreen);
 }, []);
+
+  const plans = [
+      {
+        id: "free",
+         ...t.plans[0]
+      },
+      {
+        id: "personal",
+        ...t.plans[1],
+        featured: true,
+      },
+      {
+        id: "global",
+        ...t.plans[2],
+      },
+  ];
+  
   return (
     <>
       <div className="relative min-h-screen scroll-smooth bg-cream text-ink">
@@ -353,7 +410,7 @@ useEffect(() => {
               className="group flex items-center gap-2 rounded-full bg-accent-blue hover:bg-accent-teal text-white px-5 py-2.5 text-sm w-fit"
               onClick={() =>{ setIsOpen(false); scrollTo("treatment-request");}}
             >
-              Start a case
+              {t.startCase}
               <ArrowRight className="w-4 h-4 transform transition-transform duration-500 ease-in-out group-hover:translate-x-1" />
             </Link>
           </div>
@@ -515,6 +572,134 @@ useEffect(() => {
             </div>
           </motion.section>
           {/* How it works section end */}
+          {/* Prising section start */}
+          <motion.section
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-cream py-10 sm:py-15 md:py-22 lg:py-28 border-b border-hairline" id="how-it-work">
+            <div className="max-w-360 mx-auto sm:px-8 px-4 grid grid-cols-1 gap-6 laptop:grid-cols-12 lg:gap-10">
+              <div className="laptop:col-span-4">
+                <div className="flex items-center gap-3">
+                  <span className="max-w-9 w-full bg-ink h-px"></span>
+                  <span className="font-display text-[11px] tracking-[0.25em] text-dark-grayish-blue font-semibold uppercase ">{t.priceSectionSubtitle}</span>
+                </div>
+                <h2 className="text-[24px] sm:text-[28px] md:text-[30px] laptop:text-[38px] lg:text-[44px] font-semibold leading-[1.08] text-ink font-display sm:mt-7 mt-4 tracking-[-0.0136em]" dangerouslySetInnerHTML={{ __html: t.priceSectionTitle }}></h2>
+                <p className="laptop:mt-5 mt-3 sm:text-base text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full">{t.priceSectionDescription}</p>
+                <div className="laptop:mt-5 mt-3 sm:text-xs text-sm leading-normal text-dark-grayish-blue lg:max-w-143.25 w-full flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-badge-check h-4 w-4 text-accent-blue" aria-hidden="true" data-tsd-source="/src/routes/index.tsx:922:15"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m9 12 2 2 4-4"></path>
+                  </svg>
+                  {t.priceCancel}
+                </div>
+              </div>
+              <div className="laptop:col-span-8">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                  {plans.map((plan) => {
+                    const featured = plan.featured;
+                    return (
+                      <div
+                        key={plan.id}
+                        className={`group relative flex flex-col rounded-sm border p-7 transition-all ${
+                          featured
+                            ? "bg-dark-teal shadow-lift md:-my-4"
+                            : "border-hairline bg-white"
+                        }`}
+                      >
+                        {featured && (
+                          <div className="absolute -top-3 left-1/2 translate-x-[-50%] inline-flex items-center gap-1.5 rounded-full bg-[#2c9baa] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles h-3 w-3" aria-hidden="true" data-tsd-source="/src/routes/index.tsx:934:25"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                            {t.mostChosen}
+                          </div>
+                        )}
+
+                        <div>
+                          <div
+                            className={`font-display text-[11px] tracking-[0.25em] font-semibold uppercase ${
+                              featured ? "text-white" : "text-dark-grayish-blue"
+                            }`}
+                          >
+                            {plan.name}
+                          </div>
+                          <p
+                            className={`mt-2 text-[0.95rem] font-serif italic font-medium tracking-[0.0264em] text-dark-grayish-blue ${
+                              featured ? "text-white" : "text-dark-grayish-blue"
+                            }`}
+                          >
+                            {plan.tagline}
+                          </p>
+                        </div>
+
+                        <div className="mt-6 flex items-baseline gap-2">
+                          <span
+                            className={`font-display text-[2.4rem] font-semibold tracking-[-0.02em] ${
+                              featured ? "text-white" : "text-ink"
+                            }`}
+                          >
+                            {plan.price}
+                          </span>
+                          <span
+                            className={`text-[0.82rem] text-dark-grayish-blue ${
+                              featured ? "text-white" : "text-dark-grayish-blue"
+                            }`}
+                          >
+                            {plan.cadence}
+                          </span>
+                        </div>
+
+                        <div
+                          className={`mt-6 h-px w-full ${
+                            featured ? "bg-cream/12" : "bg-hairline"
+                          }`}
+                        />
+
+                        <ul className="mt-6 space-y-3.5">
+                          {plan.features.map((f) => (
+                            <li key={f} className="flex items-start gap-3">
+                                <svg className={`lucide lucide-circle-check mt-0.5 h-4 w-4 flex-none text-accent-teal`}
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"
+                                    aria-hidden="true" >
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                              
+                              <span
+                                className={`text-[0.9rem] leading-relaxed ${
+                                  featured ? "text-white" : "text-ink"
+                                }`}
+                              >
+                                {f}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="mt-8 flex-1" />
+                        <button
+                          onClick={() => { scrollTo(plan.href)}}
+                          className={`hidden cursor-pointer lg:flex items-center gap-2 rounded-full group transition-all duration-500  px-5 py-2.5 text-sm justify-center ${
+                            featured
+                              ? "bg-[#FAFAF7] text-ink"
+                              : "bg-accent-blue hover:bg-accent-teal text-white"
+                          }`}
+                        >
+                          {plan.cta}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                            strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right h-3.5 w-3.5"
+                            aria-hidden="true" >
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.section>
+          {/* Prising section end */}
           <section id="treatment-request" className="relative py-10 sm:py-15 md:py-22 lg:py-28 bg-dark-teal">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -588,18 +773,27 @@ useEffect(() => {
                               value={trName}
                               onChange={(e) => setTrName(e.target.value)}
                               placeholder={t.namePlaceholder}
-                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal h-10"
                             />
                           </div>
                           <div className="flex flex-col gap-2.5 sm:col-span-1 col-span-2">
                             <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.phoneLabel} <span className="text-accent-blue">*</span></label>
-                            <input
+                            <div className="wrap-number flex w-full rounded-md border border-hairline bg-white relative">
+                              <PhoneInput
+                                international
+                                defaultCountry="GE"
+                                value={trPhone}
+                                onChange={(value) => setTrPhone(value || "")}
+                                placeholder={t.phonePlaceholder}
+                              />
+                            </div>
+                            {/* <input
                               type="tel"
                               value={trPhone}
                               onChange={(e) => setTrPhone(e.target.value)}
                               placeholder={t.phonePlaceholder}
                               className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-ink outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
-                            />
+                            /> */}
                           </div>
                           <div className="flex flex-col gap-2.5 col-span-2">
                             <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.emailLabel} </label>
@@ -608,7 +802,7 @@ useEffect(() => {
                               value={trEmail}
                               onChange={(e) => setTrEmail(e.target.value)}
                               placeholder={t.emailPlaceholder}
-                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal h-10"
                             />
                           </div>
                         </div>
@@ -629,7 +823,7 @@ useEffect(() => {
                               value={trCountryRes}
                               onChange={(e) => setTrCountryRes(e.target.value)}
                               placeholder={t.destinationPlaceholder}
-                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
+                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal h-10"
                             />
                           </div>
                           <div className="flex flex-col gap-2.5 sm:col-span-1 col-span-2">
@@ -637,7 +831,7 @@ useEffect(() => {
                             <select
                               value={trPreferred}
                               onChange={(e) => setTrPreferred(e.target.value)}
-                              className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trPreferred ? "text-ink" : "text-dark-grayish-blue"}`}
+                              className={`h-10 rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trPreferred ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trPreferred}</option>
                               {t.trPreferredOpts.map((opt, index) => (
@@ -655,12 +849,12 @@ useEffect(() => {
                           <p className="text-[17px] font-display text-ink font-medium leading-[1.706]">{t.yourCaseTitle}</p>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                          <div className="flex flex-col gap-2.5 col-span-2">
+                          <div className="flex flex-col gap-2.5 sm:col-span-1 col-span-2">
                             <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.treatmentNeededLabel} <span className="text-accent-blue">*</span></label>
                             <select
                               value={trTreatment}
                               onChange={(e) => setTrTreatment(e.target.value)}
-                              className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTreatment ? "text-ink" : "text-dark-grayish-blue"}`}
+                              className={`h-10 rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTreatment ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trTreatment}</option>
                               {t.trTreatmentOpts.map((opt, index) => (
@@ -673,7 +867,7 @@ useEffect(() => {
                             <select
                               value={trTimeline}
                               onChange={(e) => setTrTimeline(e.target.value)}
-                              className={`rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTimeline ? "text-ink" : "text-dark-grayish-blue"}`}
+                              className={`h-10 rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 outline-none focus:border-accent-teal ${trTimeline ? "text-ink" : "text-dark-grayish-blue"}`}
                             >
                               <option value="">{t.trTimeline}</option>
                               {t.trTimelineOpts.map((opt, index) => (
@@ -681,7 +875,7 @@ useEffect(() => {
                               ))}
                             </select>
                           </div>
-                          <div className="flex flex-col gap-2.5 sm:col-span-1 col-span-2">
+                          {/* <div className="flex flex-col gap-2.5 sm:col-span-1 col-span-2">
                             <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.budgetLabel} </label>
                             <input
                               type="text"
@@ -690,6 +884,19 @@ useEffect(() => {
                               placeholder={t.trBudget}
                               className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] leading-1 text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal"
                             />
+                          </div> */}
+                          <div className="flex flex-col gap-2.5 col-span-2">
+                            <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.fileLabel} </label>
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => setTrFile(e.target.files?.[0] ?? null)}
+                              className="rounded-md border border-hairline bg-white px-3.5 py-2.5 text-[13px] text-[#062A4F] outline-none placeholder:text-dark-grayish-blue focus:border-accent-teal h-10"
+                            />
+                            {trFile && (
+                              <p className="text-xs text-dark-grayish-blue">{trFile.name}</p>
+                            )}
                           </div>
                           <div className="flex flex-col gap-2.5 col-span-2">
                             <label htmlFor="" className="text-ink font-medium text-sm leading-[1.2]">{t.additionalCommentsLabel} </label>
@@ -949,6 +1156,7 @@ useEffect(() => {
                         <div>
                           <h2 className="font-display text-sm font-semibold text-ink">{t.assistantBadge}</h2>
                           <div className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-accent-teal block"></span><p className="text-xs text-dark-grayish-blue">{t.assistantTagline}</p></div>
+                          <div className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-accent-teal block"></span><p className="text-xs text-dark-grayish-blue">{t.freeQuestionsLabel}: {freeQuestionsLeft}</p></div>
                         </div>
                       </div>
                       <div>
@@ -1001,7 +1209,7 @@ useEffect(() => {
                       </div>
                     )}
                     <div className="flex flex-col gap-3 sm:flex-row border-t border-hairline">
-                      <div className="flex gap-3 w-full py-3 px-4 items-center">
+                      <div className="flex gap-3 w-full pt-3 px-4 items-center">
                         <input
                           type="text"
                           value={message}
@@ -1016,6 +1224,7 @@ useEffect(() => {
                         </button>
                       </div>
                     </div>
+                    <span className="text-xs text-dark-grayish-blue px-4 pt-1.5 pb-3 block">{t.aiNots}</span>
                   </div>
                 </div>
               </div>
@@ -1033,7 +1242,7 @@ useEffect(() => {
                     <span className="max-w-9 w-full bg-accent-teal h-px"></span>
                     <span className="font-display text-[11px] tracking-[0.25em] text-cream/60 font-semibold uppercase ">{t.privacyTrustSubtitle}</span>
                   </div>
-                  <h2 className="text-[24px] sm:text-[28px] md:text-[30px] laptop:text-[38px] lg:text-[44px] font-semibold leading-[1.08] text-cream font-display sm:mt-6 mt-4 tracking-[-0.0136em]" dangerouslySetInnerHTML={{ __html: t.privacyTrustTitle }}></h2>
+                  <h2 className="break-words text-[24px] sm:text-[28px] md:text-[30px] laptop:text-[38px] lg:text-[44px] font-semibold leading-[1.08] text-cream font-display sm:mt-6 mt-4 tracking-[-0.0136em]" dangerouslySetInnerHTML={{ __html: t.privacyTrustTitle }}></h2>
                 </div>
                 <div className="laptop:col-span-7">
                   <p className="laptop:mt-5 sm:text-base text-sm leading-normal text-cream/75 lg:max-w-143.25 w-full">{t.privacyTrustDescription}</p>

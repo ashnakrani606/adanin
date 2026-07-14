@@ -1,6 +1,6 @@
 const ru = {
   nav: ["Как работает", "Запрос на лечение", "Паспорт здоровья", "Конфиденциальность"],
-  startCase: "Возбудить дело",
+  startCase: "Начать",
   heroBadge: "Координация медицинского обслуживания",
   title: 'Ваше медицинское досье,   <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">подготовленное</span> для лечения за рубежом.',
   description: "Adamiani.ai помогает пациентам преобразовать разрозненные результаты сканирования, медицинские заключения и записи в четкое резюме клинического случая, чтобы лицензированные клиники могли изучить ситуацию и предложить структурированные варианты лечения.",
@@ -8,7 +8,7 @@ const ru = {
   secondaryCta: "Узнайте больше о «Паспорте здоровья»",
   features: [
     {
-      title: "Краткое изложение дела",
+      title: "Краткое изложение случая",
       subtitle: "Структурировано для клиницистов"
     },
     {
@@ -16,7 +16,7 @@ const ru = {
       subtitle: "По диагнозу и контексту"
     },
     {
-      title: "Соответствует условию",
+      title: "Подбор по состоянию",
       subtitle: "На основании вашего клинического случая"
     }
   ],
@@ -28,7 +28,7 @@ const ru = {
   whatAdamianiProvidesTitle: "Что предлагает Adamiani",
   whatAdamianiProvides: [
     {
-      title: "Краткое изложение дела",
+      title: "Краткое изложение случая",
     },
     {
       title: "Подбор клиники",
@@ -43,6 +43,55 @@ const ru = {
       title: "Обмен данными на основе согласия",
     },
   ],
+  mostChosen: "опулярный",
+  plans: [
+    {
+      name: "Бесплатно",
+      tagline: "Начните организовывать своё лечение",
+      price: "$0",
+      cadence: "навсегда",
+      features: [
+        "10 вопросов AI-чату",
+        "Форма запроса на лечение",
+        "Базовое резюме случая",
+      ],
+      cta: "Начать бесплатно",
+      href: "Связаться с нами",
+    },
+    {
+      name: "Персональный",
+      tagline: "Персональная координация медицинской помощи",
+      price: "$7",
+      cadence: "в месяц",
+      features: [
+        "100 вопросов AI-чату в месяц",
+        "Приоритетный запрос на лечение",
+        "Проверка медицинских документов",
+      ],
+      cta: "Связаться с нами",
+      href: "Связаться с нами",
+    },
+    {
+      name: "Глобальный доступ",
+      tagline: "Координация лечения между странами",
+      price: "$18",
+      cadence: "в месяц",
+      features: [
+        "350 вопросов AI-чату в месяц",
+        "Приоритетный запрос на лечение",
+        "Проверка медицинских документов",
+        "Подбор клиник в разных странах",
+      ],
+      cta: "Связаться с нами",
+      href: "Связаться с нами",
+    },
+  ],
+  priceSectionSubtitle: "Цены",
+  priceSectionTitle:
+  'Простые тарифы для <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">каждого этапа</span> вашего лечения.',
+  priceSectionDescription:
+  "Начните бесплатно. Переходите на более высокий тариф, когда вам понадобится более глубокий разбор случая, приоритетное обслуживание или координация лечения между странами.",
+  priceCancel: "Отменить можно в любое время · Без скрытых платежей",
   howItWorksSectionSubtitle: "Как это работает",
   howItWorksSectionTitle: 'От разрозненных <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue">документов</span>  к вариантам лечения, одобренным врачами.',
   howItWorksSectionDescription: "Больше не нужно жонглировать переводчиками, папками с PDF-файлами и незнакомыми системами. Adamiani вносит порядок в каждый этап работы.",
@@ -55,7 +104,7 @@ const ru = {
     {
       number: "02",
       title: "Мы это организуем.",
-      description: "ИИ формирует четкое резюме по делу и хронологию медицинских событий.",
+      description: "ИИ формирует четкое резюме по вашему случаю и хронологию медицинских событий.",
     },
     {
       number: "03",
@@ -83,13 +132,13 @@ const ru = {
     },
   ],
   aboutYouTitle: "О вас",
-  nameLabel: "О вас",
+  nameLabel: "Имя ",
   phoneLabel: "WhatsApp / Телефон",
   namePlaceholder: "ваше полное имя",
   phonePlaceholder: "+995 ...",
   emailLabel: "электронная почта",
   emailPlaceholder: "you@email.com",
-  contactNote: "Adamiani свяжется с вами только по вопросам, касающимся вашего дела. Мы не будем передавать ваши данные третьим лицам.",
+  contactNote: "Adamiani свяжется с вами только по вопросам, касающимся вашего случая. Мы не будем передавать ваши данные третьим лицам.",
   locationDestinationTitle: "Местоположение и пункт назначения",
   countryLabel: "Страна проживания",
   destinationLabel: "Где вы хотите проходить лечение?",
@@ -103,11 +152,12 @@ const ru = {
   budgetLabel: "Ориентировочный бюджет (необязательно)",
   budgetPlaceholder: "Prefer not to say",
   additionalCommentsLabel: "Дополнительные комментарии (необязательно)",
+  fileLabel: "Прикрепите медицинские документы (необязательно)",
   additionalInfoPlaceholder: "Что еще клиникам следует знать о вашем случае?",
   submitNote: "После того как вы отправите форму, представители Adamiani.ai свяжутся с вами и помогут спланировать дальнейшие действия.",
   submitButton: "Узнайте о вариантах лечения",
   problemSectionSubtitle: "Проблема",
-  problemSectionTitle: "Лечение не заканчивается, когда вы <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>Выписаться</span>  tиз больницы.",
+  problemSectionTitle: "Лечение не заканчивается, когда вы <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>выписываетесь</span>  из больницы.",
   problemSectionDescription: "Лечение за рубежом часто сопряжено с определенными пробелами: языковым барьером, разрозненностью медицинской документации и отсутствием четкой схемы дальнейшего наблюдения. Adamiani помогает наладить взаимодействие на этих стыках.",
   whereCareBreaksDownTitle: "Где система ухода дает сбой",
   whereCareBreaksDownItems: [
@@ -129,7 +179,7 @@ const ru = {
     },
   ],
   healthPassportSubtitle: "Паспорт здоровья",
-  healthPassportTitle: "Одно уединенное место для каждого <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>Заключение</span>  и рецепт.",
+  healthPassportTitle: "Одно личное место для каждого <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>заключения</span>  и рецепта.",
   healthPassportDescription: "Личное пространство для систематизации медицинских документов, сводок и информации о дальнейшем наблюдении — доступ к нему открывается только с вашего согласия.",
   healthPassportFeatures: [
     {
@@ -153,13 +203,13 @@ const ru = {
   consentBasedDescription: "Ваши медицинские записи остаются у вас — доступ к ним предоставляется только тем специалистам, которых вы сами выберете, и только тогда, когда вы сами решите это сделать.",
   clinicMatchingSubtitle: "Подбор клиники",
   clinicMatchingTitle: "Не просто поиск клиники —  <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-blue'>сравнение</span>  вариантов, проверенных на основе отзывов.",
-  clinicMatchingDescription: "Adamiani помогает упорядочить документы и подготовить ваше дело для рассмотрения в профильных клиниках. Вы получаете структурированные варианты для ознакомления и сравнения.",
+  clinicMatchingDescription: "Adamiani помогает упорядочить документы и подготовить ваше случая для рассмотрения в профильных клиниках. Вы получаете структурированные варианты для ознакомления и сравнения.",
   clinicMatchingButton: "Get Treatment Options",
   clinicMatchingFeatures: [
     {
       letter: "Q",
       title: "Соответствующий критериям случай",
-      description: "Структурированное краткое изложение дела, основанное на предоставленных вами документах и ​​информации.",
+      description: "Структурированное краткое изложение случая, основанное на предоставленных вами документах и ​​информации.",
     },
     {
       letter: "C",
@@ -218,9 +268,10 @@ const ru = {
     "Как работает Adamiani?",
   ],
   assistantBadge: "Ассистент Adamiani",
-  assistantTagline: "Систематизирует материалы вашего дела · не врач",
+  aiNots: "Если вы хотите, чтобы мы рассмотрели снимки, анализы или документы, воспользуйтесь формой запроса ниже.",
+  assistantTagline: "Систематизирует материалы вашего случая · ИИ-ассистент · не врач и не заменяет медицинскую консультацию",
   privacyTrustSubtitle: "Конфиденциальность и доверие",
-  privacyTrustTitle: "Создано для  <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-teal'>конфиденциальности пациентов</span>  с самого начала one.",
+  privacyTrustTitle: "Создано для  <span class='font-serif italic font-medium tracking-[0.0264em] text-accent-teal'>конфиденциальности пациентов</span>  с самого начала",
   privacyTrustDescription: "Ваши медицинские данные обрабатываются с вашего согласия и при строгом контроле доступа. Adamiani передает информацию о вашем случае только тем клиникам, которые вы одобрили.",
   privacyTrustFeatures: [
     {
@@ -320,7 +371,7 @@ const ru = {
   chatAssistantName: "Adamiani.ai Assistant",
   freeQuestionsLabel: "Осталось бесплатных вопросов",
   askAssistant: "Ask Adamiani Assistant...",
-  chatPlaceholder: "Спросите у помощника Adamiani...",
+  chatPlaceholder: "Опишите ваши симптомы или спросите о вариантах лечения...",
   sendButton: "Отправить",
   chatGreeting: "Здравствуйте! Я могу помочь систематизировать информацию по вашему случаю, подготовить краткий обзор и составить список вопросов для обсуждения с врачом.",
   chatLimitReached: "Бесплатные вопросы закончились. Зарегистрируйтесь или оставьте заявку, чтобы продолжить. 👇",
