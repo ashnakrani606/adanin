@@ -300,7 +300,8 @@ useEffect(() => {
   const plans = [
       {
         id: "free",
-         ...t.plans[0]
+        ...t.plans[0],
+        featured: false,
       },
       {
         id: "personal",
@@ -310,6 +311,7 @@ useEffect(() => {
       {
         id: "global",
         ...t.plans[2],
+        featured: false,
       },
   ];
   
