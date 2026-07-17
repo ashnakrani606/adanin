@@ -7,16 +7,26 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+function getTransporter() {
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
 
+  if (!user || !pass) {
+    throw new Error(
+      "SMTP credentials are missing. Set SMTP_USER and SMTP_PASS in your environment (for Gmail, use an app password)."
+    );
+  }
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port: Number(process.env.SMTP_PORT || 587),
+    secure: false,
+    auth: {
+      user,
+      pass,
+    },
+  });
+}
 
 export async function POST(req: Request) {
   try {
@@ -43,6 +53,7 @@ export async function POST(req: Request) {
     const firstName = body.name?.trim().split(/\s+/)[0] || "there";
     
     // Send Email
+    const transporter = getTransporter();
     await transporter.sendMail({
       from: `Adamiani <${process.env.SMTP_USER}>`,
       to: process.env.ADMIN_EMAIL,
