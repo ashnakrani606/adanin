@@ -228,10 +228,9 @@ export default function Home() {
         }),
       });
 
-      const result = await response.json();
-      console.log("sdfsdf", result)
+      const result = await response.json().catch(() => ({}));
 
-      if (!response.ok) {
+      if (!response.ok && result?.success === false) {
         setWaitlistFeedback({ type: "error" });
         return;
       }
