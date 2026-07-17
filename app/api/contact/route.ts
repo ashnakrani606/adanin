@@ -7,24 +7,29 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-function getTransporter() {
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS?.trim();
+function createTransporter() {
+  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+  const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
 
-  if (!user || !pass) {
-    return null;
+  if (!smtpUser || !smtpPass) {
+    throw new Error(
+      "SMTP_USER and SMTP_PASS are required. Set them in your environment and restart Next.js."
+    );
   }
 
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: false,
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
     auth: {
-      user,
-      pass,
+      user: smtpUser,
+      pass: smtpPass,
     },
   });
 }
+
 
 export async function POST(req: Request) {
   try {
@@ -49,185 +54,169 @@ export async function POST(req: Request) {
     }
 
     const firstName = body.name?.trim().split(/\s+/)[0] || "there";
+    const transporter = createTransporter();
     
-    // Send email notifications if SMTP is configured. If not, continue successfully and log the issue.
-    const transporter = getTransporter();
-    let emailSent = false;
-    let emailError: string | null = null;
-
-    if (transporter) {
-      try {
-        await transporter.sendMail({
-          from: `Adamiani <${process.env.SMTP_USER}>`,
-          to: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
-          subject: "New Waitlist Registration",
-          html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>New Early Access Registration</title>
-            </head>
-            <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:40px 20px;">
-                <tr>
-                  <td align="center">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
-                          <tr>
-                            <td style="background:#1e6b8f;padding:28px;text-align:center;">
-                              <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">
-                                Adamiani
-                              </h1>
-                              <p style="margin:8px 0 0;color:#ffffff;font-size:15px;"> New Early Access Registration</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding:32px;">
-                              <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">
-                                A new user has joined the Adamiani Early Access waitlist.
-                              </p>
-                              <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-                                <tr>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;width:180px;">Name</td>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
-                                  ${body.name}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Email</td>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
-                                  ${body.email}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Role</td>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
-                                    ${body.role}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">User Type</td>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
-                                    ${body.user_type}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Source</td>
-                                  <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
-                                  ${body.source}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="padding:14px;font-weight:600;">
-                                    Submitted At
-                                  </td>
-                                  <td style="padding:14px;">
-                                  ${submittedAt}
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                        </tr>
-                        <tr>
-                          <td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
-                            <p style="margin:0;color:#64748b;font-size:13px;">This notification was automatically generated by the Adamiani website.</p>
-                          </td>
-                        </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </body>
-          </html>
-          `,
-        });
-
-        await transporter.sendMail({
-          from: `Adamiani <${process.env.SMTP_USER}>`,
-          to: body.email,
-          subject: "Welcome to Adamiani Early Access",
-          html: `
-          <!DOCTYPE html>
-            <html>
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Welcome to Adamiani Early Access</title>
-            </head>
-            <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:40px 20px;">
-              <tr>
+    // Send Email
+    await transporter.sendMail({
+      from: `Adamiani <${process.env.SMTP_USER}>`,
+      to: process.env.ADMIN_EMAIL,
+      subject: "New Waitlist Registration",
+      html: `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>New Early Access Registration</title>
+        </head>
+        <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:40px 20px;">
+            <tr>
               <td align="center">
-                <table width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
-                  <tr>
-                    <td style="background:#1e6b8f;padding:28px;text-align:center;">
-                    <h1 style="margin:0;color:#ffffff;font-size:24px;">Adamiani</h1>
-                    <p style="margin:8px 0 0;color:#ffffff;font-size:15px;">
-                    Welcome to Early Access
-                    </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding:36px;">
-                    <p style="font-size:16px;line-height:1.8;">
-                    Hi <strong style="color:#1e6b8f;">${firstName}</strong>,
-                    </p>
-                    <p style="font-size:16px;line-height:1.8;">
-                    Thank you for joining <strong style="color:#1e6b8f;" >Adamiani Early Access.</strong>
-                    </p>
-                    <p style="font-size:16px;line-height:1.8;">
-                    We're building a clearer, more organized way for people to manage their medical information and healthcare journey.
-                    </p>
-                    <p style="font-size:16px;line-height:1.8;">
-                    We've received your registration and will keep you updated as Adamiani develops.
-                    </p>
-                    <p style="font-size:16px;line-height:1.8;">
-                    Thank you for being one of our early members.
-                    </p>
-                    <p style="font-size:16px;line-height:1.8;margin-top:32px;">
-                    Best regards,<br>
-                    <strong style="color:#1e6b8f;" >The Adamiani Team</strong>
-                    </p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
+                      <tr>
+                        <td style="background:#1e6b8f;padding:28px;text-align:center;">
+                          <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">
+                            Adamiani
+                          </h1>
+                          <p style="margin:8px 0 0;color:#ffffff;font-size:15px;"> New Early Access Registration</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:32px;">
+                          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">
+                            A new user has joined the Adamiani Early Access waitlist.
+                          </p>
+                          <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                            <tr>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;width:180px;">Name</td>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
+                              ${body.name}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Email</td>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
+                              ${body.email}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Role</td>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
+                                ${body.role}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">User Type</td>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
+                                ${body.user_type}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;font-weight:600;">Source</td>
+                              <td style="padding:14px;border-bottom:1px solid #e5e7eb;">
+                              ${body.source}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:14px;font-weight:600;">
+                                Submitted At
+                              </td>
+                              <td style="padding:14px;">
+                              ${submittedAt}
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
+                        <p style="margin:0;color:#64748b;font-size:13px;">This notification was automatically generated by the Adamiani website.</p>
+                      </td>
+                    </tr>
+                </table>
               </td>
-                  </tr>
-                  <tr>
-                    <td style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
-                      <p style="margin:0 0 10px;font-size:14px;color:#475569;">
-                        Need help?
-                      </p>
-                      <p style="margin:0 0 18px;font-size:14px;">
-                        Contact us at
-                        <a
-                          href="mailto:aleks@adamiani.ai"
-                          style="color:#0F172A;font-weight:600;text-decoration:none;">
-                          aleks@adamiani.ai
-                        </a>
-                      </p>
-                      <p style="margin:0;font-size:13px;color:#64748b;">
-                        © 2026 Adamiani. All rights reserved.
-                      </p>
-                    </td>
-                </tr>
-              </table>
-            </body>
-            </html>
-          `,
-        });
+            </tr>
+          </table>
+        </body>
+      </html>
+      `,
+    });
 
-        emailSent = true;
-      } catch (error) {
-        console.error("Email send failed:", error);
-        emailError = error instanceof Error ? error.message : "Unknown email error";
-      }
-    } else {
-      console.warn("SMTP credentials not configured; skipping email delivery.");
-    }
+    await transporter.sendMail({
+      from: `Adamiani <${process.env.SMTP_USER}>`,
+      to: body.email,
+      subject: "Welcome to Adamiani Early Access",
+      html: `
+      <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to Adamiani Early Access</title>
+        </head>
+        <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:40px 20px;">
+          <tr>
+          <td align="center">
+            <table width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+              <tr>
+                <td style="background:#1e6b8f;padding:28px;text-align:center;">
+                <h1 style="margin:0;color:#ffffff;font-size:24px;">Adamiani</h1>
+                <p style="margin:8px 0 0;color:#ffffff;font-size:15px;">
+                Welcome to Early Access
+                </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:36px;">
+                <p style="font-size:16px;line-height:1.8;">
+                Hi <strong style="color:#1e6b8f;">${firstName}</strong>,
+                </p>
+                <p style="font-size:16px;line-height:1.8;">
+                Thank you for joining <strong style="color:#1e6b8f;" >Adamiani Early Access.</strong>
+                </p>
+                <p style="font-size:16px;line-height:1.8;">
+                We're building a clearer, more organized way for people to manage their medical information and healthcare journey.
+                </p>
+                <p style="font-size:16px;line-height:1.8;">
+                We've received your registration and will keep you updated as Adamiani develops.
+                </p>
+                <p style="font-size:16px;line-height:1.8;">
+                Thank you for being one of our early members.
+                </p>
+                <p style="font-size:16px;line-height:1.8;margin-top:32px;">
+                Best regards,<br>
+                <strong style="color:#1e6b8f;" >The Adamiani Team</strong>
+                </p>
+          </td>
+              </tr>
+              <tr>
+                <td style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
+                  <p style="margin:0 0 10px;font-size:14px;color:#475569;">
+                    Need help?
+                  </p>
+                  <p style="margin:0 0 18px;font-size:14px;">
+                    Contact us at
+                    <a
+                      href="mailto:aleks@adamiani.ai"
+                      style="color:#0F172A;font-weight:600;text-decoration:none;">
+                      aleks@adamiani.ai
+                    </a>
+                  </p>
+                  <p style="margin:0;font-size:13px;color:#64748b;">
+                    © 2026 Adamiani. All rights reserved.
+                  </p>
+                </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
+    });
 
     return NextResponse.json({
       success: true,
-      emailSent,
-      ...(emailError ? { message: `Registration saved, but email delivery failed: ${emailError}` } : {}),
     });
   } catch (error: any) {
     console.error("API ERROR:", error);
