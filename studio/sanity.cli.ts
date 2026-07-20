@@ -21,4 +21,8 @@ export default defineCliConfig({
     dataset,
   },
   studioHost: undefined,
+   deployment: {
+    appId: 'xteu6y597di2p5s2gs0pedh8',
+    autoUpdates: true
+  },
 });
