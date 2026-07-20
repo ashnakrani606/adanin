@@ -1,5 +1,13 @@
 const en = {
   nav: ["How it works", "Treatment Request", "Health Passport", "Privacy",],
+  blogNav: "Blog",
+  blog: {
+    title: "Blog",
+    subtitle: "Insights on healthcare coordination, Health Passport, and treatment abroad.",
+    allCategories: "All",
+    empty: "No posts yet. Check back soon.",
+    backToBlog: "Back to blog",
+  },
   startCase: "Start a case",
   heroBadge: "Healthcare coordination",
   title: 'Your medical case, <span class="font-serif italic font-medium tracking-[0.0264em] text-accent-blue"> organized</span> for treatment abroad.',

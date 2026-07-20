@@ -79,6 +79,11 @@ export default function Home() {
       const parsed = Number.parseInt(savedQuestions, 10);
       if (!Number.isNaN(parsed)) setFreeQuestionsLeft(parsed);
     }
+
+    const savedLang = localStorage.getItem("adamiani_lang");
+    if (savedLang === "en" || savedLang === "ru" || savedLang === "ka") {
+      setLanguage(savedLang);
+    }
   }, []);
 
   useEffect(() => {
@@ -398,13 +403,19 @@ useEffect(() => {
                   {item.label}
                 </button>
               ))}
+              <Link href="/blog" className="transition cursor-pointer hover:text-accent-blue">
+                {t.blogNav}
+              </Link>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex">
-                {["en", "ru", "ka"].map((lang: any, index) => (
+                {(["en", "ru", "ka"] as const).map((lang, index) => (
                   <div
                     key={lang}
-                    onClick={() => setLanguage(lang)}
+                    onClick={() => {
+                      setLanguage(lang);
+                      localStorage.setItem("adamiani_lang", lang);
+                    }}
                     className={`cursor-pointer text-xs font-medium ${language === lang ? "text-ink" : "text-dark-grayish-blue"}`}
                   >
                     {lang.toUpperCase()}
@@ -459,6 +470,9 @@ useEffect(() => {
                   {item.label}
                 </button>
               ))}
+              <Link href="/blog" onClick={() => setIsOpen(false)} className="transition">
+                {t.blogNav}
+              </Link>
             </div>
             <Link
               href="/"
@@ -1475,10 +1489,13 @@ useEffect(() => {
                 {t.footerDescription}
               </p>
               <div className="mt-5 flex">
-                {["en", "ru", "ka"].map((lang: any, index) => (
+                {(["en", "ru", "ka"] as const).map((lang, index) => (
                   <div
                     key={lang}
-                    onClick={() => setLanguage(lang)}
+                    onClick={() => {
+                      setLanguage(lang);
+                      localStorage.setItem("adamiani_lang", lang);
+                    }}
                     className={`cursor-pointer text-[11px] font-medium ${language === lang ? "text-ink" : "text-dark-grayish-blue"}`}
                   >
                     {lang.toUpperCase()}
