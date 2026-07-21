@@ -26,7 +26,7 @@ export function CategoryFilter({
       <button
         type="button"
         onClick={() => onChange(null)}
-        className={`cursor-pointer px-3 py-1.5 text-xs font-medium transition ${
+        className={`cursor-pointer px-3 py-1.5 text-xs font-medium transition rounded-sm ${
           activeSlug === null
             ? "bg-ink text-white"
             : "bg-mist text-dark-grayish-blue hover:text-ink"
@@ -42,7 +42,7 @@ export function CategoryFilter({
             key={category._id}
             type="button"
             onClick={() => onChange(category.slug)}
-            className={`cursor-pointer px-3 py-1.5 text-xs font-medium transition ${
+            className={`cursor-pointer px-3 py-1.5 text-xs font-medium transition rounded-sm ${
               active
                 ? "bg-ink text-white"
                 : "bg-mist text-dark-grayish-blue hover:text-ink"

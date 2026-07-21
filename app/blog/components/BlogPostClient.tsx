@@ -60,13 +60,13 @@ export function BlogPostClient({ post }: BlogPostClientProps) {
           </h1>
 
           {imageUrl && (
-            <div className="relative mt-8 aspect-[16/9] overflow-hidden bg-mist">
+            <div className="relative mt-8 aspect-[16/9] overflow-hidden bg-mist rounded-sm">
               <Image
                 src={imageUrl}
                 alt={alt}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover rounded-sm"
                 sizes="(max-width: 768px) 100vw, 800px"
               />
             </div>

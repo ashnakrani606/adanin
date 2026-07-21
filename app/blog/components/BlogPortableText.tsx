@@ -133,7 +133,7 @@ const components: PortableTextComponents = {
       const src = urlForImage(value).width(1200).url();
       return (
         <figure className="my-8">
-          <div className="relative aspect-[16/9] overflow-hidden bg-mist">
+          <div className="relative aspect-[16/9] overflow-hidden bg-mist rounded-sm">
             <Image
               src={src}
               alt={value.alt || value.caption || ""}
@@ -163,7 +163,7 @@ const components: PortableTextComponents = {
           <table className="w-full min-w-[480px] border-collapse text-left text-sm">
             {headerRow && (
               <thead>
-                <tr className="border-b border-hairline bg-mist">
+                <tr className="border border-hairline bg-mist">
                   {headerRow.cells?.map((cell, index) => (
                     <th
                       key={`head-${index}`}
@@ -179,7 +179,7 @@ const components: PortableTextComponents = {
               {bodyRows.map((row, rowIndex) => (
                 <tr
                   key={`row-${rowIndex}`}
-                  className="border-b border-hairline last:border-b-0"
+                  className="border-x border-b border-hairline"
                 >
                   {row.cells?.map((cell, cellIndex) => (
                     <td
@@ -227,7 +227,7 @@ const components: PortableTextComponents = {
 
       return (
         <figure className="my-8">
-          <div className="relative aspect-video overflow-hidden bg-ink">
+          <div className="relative aspect-video overflow-hidden bg-ink rounded-sm">
             <iframe
               src={embedUrl}
               title={value.caption || "YouTube video"}
