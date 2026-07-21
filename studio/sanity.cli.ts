@@ -22,7 +22,7 @@ export default defineCliConfig({
   },
   studioHost: undefined,
    deployment: {
-    appId: 'xteu6y597di2p5s2gs0pedh8',
+    appId: 'oxwz2yujtdszvketxb7vyqbf',
     autoUpdates: true
-  },
+  }
 });
