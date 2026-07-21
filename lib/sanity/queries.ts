@@ -19,9 +19,33 @@ const listProjection = `
   }
 `;
 
+const portableTextBlockProjection = `
+  ...,
+  markDefs[]{
+    ...,
+    _type == "link" => {
+      ...,
+      href,
+      blank
+    }
+  },
+  _type == "image" => {
+    ...,
+    asset->
+  }
+`;
+
+const bodyProjection = `
+  body {
+    en[]{ ${portableTextBlockProjection} },
+    ru[]{ ${portableTextBlockProjection} },
+    ka[]{ ${portableTextBlockProjection} }
+  }
+`;
+
 const postProjection = `
   ${listProjection},
-  body,
+  ${bodyProjection},
   seoTitle,
   seoDescription
 `;

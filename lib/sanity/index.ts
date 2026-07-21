@@ -8,6 +8,8 @@ export {
 export {
   blogPostUrl,
   formatPublishDate,
+  getYouTubeEmbedUrl,
+  getYouTubeVideoId,
   isValidBlogLang,
   pickLocalized,
   pickLocalizedBody,
